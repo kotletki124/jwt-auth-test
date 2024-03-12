@@ -13,7 +13,7 @@ export function formatDate(timestamp: number): string {
 }
 
 export function formatDuration(durationMilliseconds: number): string {
-  const durationSeconds = Math.floor(durationMilliseconds / 1000);
+  const durationSeconds = Math.round(durationMilliseconds / 1000);
   const minutes = Math.floor(durationSeconds / 60);
   const seconds = durationSeconds % 60;
   return `${('0' + minutes).slice(-2)}:${('0' + seconds).slice(-2)}`;
