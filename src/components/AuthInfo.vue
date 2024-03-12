@@ -17,7 +17,7 @@ const expIn = computed(() => {
 });
 
 const timeout = setInterval(() => {
-  currTimeTs.value = Math.floor(new Date().getTime() - timeOffset);
+  currTimeTs.value = new Date().getTime() - timeOffset;
 }, 1000);
 
 watch(expIn, (value) => {
