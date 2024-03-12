@@ -5,7 +5,8 @@ import { formatDate, formatDuration } from '.././util';
 import type { Ref } from 'vue';
 
 const { state } = useAuthStore();
-const currTimeTs: Ref<number> = ref(state.accessToken?.iat);
+const timeOffset = new Date().getTime() - state.accessToken?.iat;
+const currTimeTs: Ref<number> = ref(new Date().getTime() - timeOffset);
 const iat = computed(() =>
   state.accessToken?.iat ? formatDate(state.accessToken.iat) : 'не выдан'
 );
@@ -16,7 +17,7 @@ const expIn = computed(() => {
 });
 
 const timeout = setInterval(() => {
-  currTimeTs.value += 1000;
+  currTimeTs.value = Math.floor(new Date().getTime() - timeOffset);
 }, 1000);
 
 watch(expIn, (value) => {
