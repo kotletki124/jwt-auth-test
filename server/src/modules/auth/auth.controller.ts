@@ -36,11 +36,13 @@ export class AuthController {
       throw new UnauthorizedException('Invalid credentials');
     }
     const tokenDuration = tokenDurationArg || 300000;
-    const iat = new Date().getTime();
-    const exp = iat + tokenDuration;
+    const iatMs = new Date().getTime();
+    const expMs = iatMs + tokenDuration;
+    const iat = Math.floor(iatMs / 1000);
+    const exp = Math.floor(expMs / 1000);
     const accessToken = await this.authService.generateAccessToken(user, {
-      iat: Math.floor(iat / 1000),
-      exp: Math.floor(exp / 1000),
+      iat,
+      exp,
     });
 
     response.cookie('accessToken', accessToken, {
@@ -50,7 +52,7 @@ export class AuthController {
     });
     return {
       id: user.id,
-      accessToken: { value: accessToken, iat, exp },
+      accessToken: { value: accessToken, iat: iat * 1000, exp: exp * 1000 },
     };
   }
 

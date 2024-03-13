@@ -5,7 +5,20 @@ import { formatDate, formatDuration } from '.././util';
 import type { Ref } from 'vue';
 
 const { state } = useAuthStore();
-const timeOffset = new Date().getTime() - state.accessToken?.iat;
+
+let timeOffsetItem = localStorage.getItem(
+    `timeOffset_${state.accessToken?.iat}`
+  ),
+  timeOffset: number;
+if (!timeOffsetItem) {
+  localStorage.clear();
+  timeOffset = new Date().getTime() - state.accessToken?.iat;
+  localStorage.setItem(
+    `timeOffset_${state.accessToken?.iat}`,
+    timeOffset.toString()
+  );
+} else timeOffset = +timeOffsetItem;
+
 const currTimeTs: Ref<number> = ref(new Date().getTime() - timeOffset);
 const iat = computed(() =>
   state.accessToken?.iat ? formatDate(state.accessToken.iat) : 'не выдан'
