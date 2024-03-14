@@ -94,6 +94,10 @@ const errorMessage = computed(() =>
       v-model="form.phone"
       label="Телефон"
       hint="Ваш номер телефона"
+      :rules="[
+        (val) => val?.length === 0 || val?.length === 10 || 'Неверный формат',
+      ]"
+      lazy-rules
       autocomplete="off"
     />
 
